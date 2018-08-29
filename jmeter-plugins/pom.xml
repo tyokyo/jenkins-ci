@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>me.elon</groupId>
+		<artifactId>jenkins-ci</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>jmeter-plugins</artifactId>
+	<packaging>jar</packaging>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<url>http://jmeter-plugins.org/</url>
+	<scm>
+		<url>https://github.com/undera/jmeter-plugins</url>
+		<connection>https://github.com/undera/jmeter-plugins.git</connection>
+		<developerConnection>git@github.com:undera/jmeter-plugins.git</developerConnection>
+	</scm>
+	<developers>
+		<developer>
+			<id>team</id>
+			<name>jmeter-plugins.org</name>
+			<email>jmeter-plugins@googlegroups.com</email>
+		</developer>
+	</developers>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>sonatype-nexus-staging</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<property name="JMETER_HOME" value="env.JMETER_HOME" />
+								<property name="target_file" value="jmeter-plugins-${version}.jar" />
+								<property name="from" value="target/${target_file}" />
+								<property name="to" value="${JMETER_HOME}/lib/ext" />
+								<echo message="copy file from ${from} to ${to}" />
+								<!-- <delete file="${servicemix_path}/${target_file}"></delete> -->
+								<copy file="${from}" todir="${to}/" />
+								<copy file="${from}" todir="${JMETER_HOME}/lib/ext" />
+								<!-- <copy file="${from}" todir="\\192.168.153.136\jmeter\lib\ext\" 
+									/> -->
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>kg.apc</groupId>
+			<artifactId>jmeter-plugins-cmn-jmeter</artifactId>
+			<version>0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>kg.apc</groupId>
+			<artifactId>jmeter-plugins-emulators</artifactId>
+			<version>0.4</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.jmeter/ApacheJMeter_http -->
+		<dependency>
+			<groupId>org.apache.jmeter</groupId>
+			<artifactId>ApacheJMeter_http</artifactId>
+			<version>3.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.jmeter</groupId>
+			<artifactId>ApacheJMeter_core</artifactId>
+			<version>3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jmeter</groupId>
+			<artifactId>ApacheJMeter_components</artifactId>
+			<version>3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jmeter</groupId>
+			<artifactId>ApacheJMeter_java</artifactId>
+			<version>3.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.22.0-GA</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>3.10.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.squareup.okio/okio -->
+		<dependency>
+			<groupId>com.squareup.okio</groupId>
+			<artifactId>okio</artifactId>
+			<version>1.14.1</version>
+		</dependency>
+	</dependencies>
+</project>
